@@ -1,0 +1,19 @@
+{
+	"restaurant" : {
+		"name" : "",
+		"stars" : "",
+		"mark" : "",
+		"menu" : {
+			"price" : {
+				"minimum" : 0,
+				"maximum" : 0
+			},
+			"description" : ""
+		},
+		"adress" : "",
+		"coordonnées" : "",
+		"Services" : "",
+		"langues" : "",
+		"payment" : ""
+	}
+}
