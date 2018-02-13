@@ -26,7 +26,7 @@ var app     = express();
                     var $ = cheerio.load(html);
 
                     var name, address, locality, postalCode;
-                    var json = new Object;
+                    var json = [];
 
                     $('.poi_intro-display-title').each(function(){
 
