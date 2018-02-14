@@ -26,7 +26,7 @@ var app     = express();
                     var $ = cheerio.load(html);
 
                     var name, address, locality, postalCode;
-                    var json = [];
+                    var json = new Object;
 
                     $('.poi_intro-display-title').each(function(){
 
@@ -67,7 +67,7 @@ var app     = express();
 
                         json.locality = locality;
                     })
-                    fs.writeFile('restaurants-michelin.json', JSON.stringify(json, null, 4), {'flag':'a'}, function(err){
+                    fs.appendFile('restaurants-michelin.json', JSON.stringify(json) + "\r\n", function(err){
 
             console.log('File successfully written! - Check your project directory for the restaurants-michelin.json file');
 

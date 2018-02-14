@@ -16,10 +16,11 @@ var app     = express();
             $('.resultItem-information').each(function(){
 
                 var address = $(this).find(".resultItem-address").text();
+                console.log(address);
 
                 if(address.includes("94000")){
                     console.log("Enter if");
-                    var link = $(this).find(".resultItem-name");
+                    var link = $(this).find(".resultItem-name > a");
                     var urlEnd = link.attr("href");
                     var newUrl = "https://www.lafourchette.com"+String(urlEnd);
 
@@ -42,7 +43,7 @@ var app     = express();
                             json.name = name.trim();
                         })
 
-                        $('.saleType-title').each(function(){
+                        $('.saleType--specialOffer > h3').each(function(){
 
 
                             var data = $(this);
