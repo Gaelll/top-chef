@@ -4,22 +4,30 @@ var request = require('request');
 var cheerio = require('cheerio');
 var app     = express();
 
+var file = fs.readFileSync('restaurants-michelin.json');
+var line = String(file).split(/\n/);
+var count = 0;
 
-url = 'https://www.lafourchette.com/search-refine/Les%20Mets%20de%20Mo';
 
 
-var obj = JSON.parse(fs.readFileSync('restaurants-michelin;json', 'utf8'));
 
-        request(url, function(error, response, html){
+for(var i = 0; i < line.length - 1; i++)
+{
+	var jsonExtract = JSON.parse(line[i]);
+    var nameRestaurant = String(jsonExtract.name);
+    var postalcode = String(jsonExtract.postalCode);
+	url = 'https://www.lafourchette.com/search-refine/' + nameRestaurant;
+    console.log(url);
+	request(url, function(error, response, html){
         if(!error){
 
             var $ = cheerio.load(html);
             $('.resultItem-information').each(function(){
 
                 var address = $(this).find(".resultItem-address").text();
-                console.log(address);
+                //console.log(address);
 
-                if(address.includes("94000")){
+                if(address.includes(postalcode)){
                     console.log("Enter if");
                     var link = $(this).find(".resultItem-name > a");
                     var urlEnd = link.attr("href");
@@ -70,5 +78,8 @@ var obj = JSON.parse(fs.readFileSync('restaurants-michelin;json', 'utf8'));
         
 
     })
-    
-        
+	
+	
+	count++;
+}
+console.log(count);
