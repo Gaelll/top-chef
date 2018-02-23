@@ -8,7 +8,7 @@ var app     = express();
 url = 'https://www.lafourchette.com/search-refine/Les%20Mets%20de%20Mo';
 
 
-var obj = JSON.parse(fs.readFileSync('restaurants-michelin;json', 'utf8'));
+//var obj = JSON.parse(fs.readFileSync('restaurants-michelin.json', 'utf8'));
 
         request(url, function(error, response, html){
         if(!error){
