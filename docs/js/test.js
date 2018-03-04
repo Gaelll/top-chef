@@ -4,54 +4,28 @@ var request = require('request');
 var cheerio = require('cheerio');
 var app     = express();
 
-var file = fs.readFileSync('restaurants-michelin.json');
-var line = String(file).split(/\n/);
-var count = 0;
+
+url = 'https://www.lafourchette.com/search-refine/Les%20Mets%20de%20Mo';
 
 
+//var obj = JSON.parse(fs.readFileSync('restaurants-michelin.json', 'utf8'));
 
-
-for(var i = 0; i < line.length - 1; i++)
-{
-	var jsonExtract = JSON.parse(line[i]);
-    var nameRestaurant = String(jsonExtract.name);
-    var postalcode = String(jsonExtract.postalCode);
-
-    const configuration = {
-        'uri' : 'https://www.lafourchette.com/search-refine/' + nameRestaurant,
-        'headers': {
-            'cookie': 'datadome=AHrlqAAAAAMA0jF_22PoMiIALtotww=='
-        }
-    };
-
-
-    console.log(configuration);
-	
-    //console.log(url);
-	request(configuration, function(error, response, html){
+        request(url, function(error, response, html){
         if(!error){
 
             var $ = cheerio.load(html);
             $('.resultItem-information').each(function(){
 
-                var address = $(this).find(".resultItem-address").text().trim();
-                console.log("Recup adress");
+                var address = $(this).find(".resultItem-address").text();
+                console.log(address);
 
-                if(String(address).includes(postalcode)){
+                if(address.includes("94000")){
                     console.log("Enter if");
                     var link = $(this).find(".resultItem-name > a");
                     var urlEnd = link.attr("href");
-                    //var newUrl = "https://www.lafourchette.com"+String(urlEnd);
+                    var newUrl = "https://www.lafourchette.com"+String(urlEnd);
 
-                    const configuration2 = {
-                        'uri' : 'https://www.lafourchette.com' + urlEnd,
-                        'headers': {
-                            'cookie': 'datadome=AHrlqAAAAAMA0jF_22PoMiIALtotww=='
-                        }
-                    };
-
-
-                    request(configuration2, function(error, response, html){
+                    request(newUrl, function(error, response, html){
                     if(!error){
                         var $ = cheerio.load(html);
 
@@ -80,9 +54,9 @@ for(var i = 0; i < line.length - 1; i++)
                             json.promotion = promotion;
                         })
 
-                        fs.appendFile('restaurants-lafourchette.json', JSON.stringify(json) + ",\r\n", function(err){
+                        fs.appendFile('restaurants-lafourchette-test.json', JSON.stringify(json) + "\r\n", function(err){
 
-                console.log('File successfully written! - Check your project directory for the restaurants-lafourchette.json file');
+                console.log('File successfully written! - Check your project directory for the restaurants-lafourchette-test.json file');
 
             })
                 }
@@ -96,8 +70,5 @@ for(var i = 0; i < line.length - 1; i++)
         
 
     })
-	
-	
-	count++;
-}
-console.log(count);
+    
+        
